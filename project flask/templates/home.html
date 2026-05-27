@@ -1,0 +1,141 @@
+<!-- templates/home.html -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>OTP App Home</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial;
+        }
+
+        body{
+
+            background-image:url("https://images.unsplash.com/photo-1556740749-887f6717d7e4");
+            background-size:cover;
+            background-position:center;
+
+            height:100vh;
+        }
+
+        .overlay{
+
+            background:rgba(0,0,0,0.7);
+            height:100vh;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .container{
+
+            background:white;
+            padding:40px;
+            width:400px;
+
+            border-radius:15px;
+
+            text-align:center;
+
+            box-shadow:0px 0px 20px black;
+        }
+
+        h1{
+
+            color:darkblue;
+            margin-bottom:20px;
+        }
+
+        p{
+
+            margin-bottom:25px;
+            color:gray;
+        }
+
+        ul{
+
+            list-style:none;
+        }
+
+        li{
+
+            margin:15px 0;
+        }
+
+        a{
+
+            text-decoration:none;
+
+            background:darkblue;
+            color:white;
+
+            padding:12px 20px;
+
+            display:block;
+
+            border-radius:8px;
+
+            transition:0.3s;
+        }
+
+        a:hover{
+
+            background:navy;
+            transform:scale(1.05);
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="overlay">
+
+        <div class="container">
+
+            <h1>Welcome to OTP App</h1>
+
+            <p>
+                Flask OTP Registration System
+            </p>
+
+            <ul>
+
+                <li>
+                    <a href="/about">About</a>
+                </li>
+
+                <li>
+                    <a href="/contact">Contact</a>
+                </li>
+
+                <li>
+                    <a href="/dashboard">Dashboard</a>
+                </li>
+
+                <li>
+                    <a href="/generate_otp">Generate OTP</a>
+                </li>
+
+                <li>
+                    <a href="/user/chandu">Dynamic URL</a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

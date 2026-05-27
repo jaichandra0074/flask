@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICICI BANK ATM</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+
+            font-family: Arial, sans-serif;
+
+            height:100vh;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            background:linear-gradient(to right,#141e30,#243b55);
+        }
+
+        .container{
+
+            width:400px;
+
+            background:white;
+
+            padding:40px;
+
+            border-radius:15px;
+
+            box-shadow:0px 0px 20px rgba(0,0,0,0.4);
+
+            text-align:center;
+        }
+
+        h1{
+
+            color:#003366;
+
+            margin-bottom:20px;
+        }
+
+        input{
+
+            width:100%;
+
+            padding:12px;
+
+            margin-top:15px;
+
+            border:1px solid #ccc;
+
+            border-radius:5px;
+
+            font-size:16px;
+        }
+
+        button{
+
+            width:100%;
+
+            padding:12px;
+
+            margin-top:20px;
+
+            border:none;
+
+            background:#003366;
+
+            color:white;
+
+            border-radius:5px;
+
+            font-size:16px;
+
+            cursor:pointer;
+        }
+
+        button:hover{
+
+            background:#0055aa;
+        }
+
+        .menu{
+
+            display:none;
+        }
+
+        .menu button{
+
+            margin-top:15px;
+        }
+
+        #message{
+
+            margin-top:20px;
+
+            font-weight:bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- LOGIN PAGE -->
+
+        <div id="loginPage">
+
+            <h1>ICICI BANK ATM</h1>
+
+            <img src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png"
+                 width="120">
+
+            <input type="password"
+                   id="pin"
+                   placeholder="Enter 6-digit ATM PIN">
+
+            <button onclick="login()">
+                Login
+            </button>
+
+            <h3 id="loginMessage"></h3>
+
+        </div>
+
+
+
+        <!-- MENU PAGE -->
+
+        <div class="menu" id="menuPage">
+
+            <h1>ATM MENU</h1>
+
+            <button onclick="checkBalance()">
+                Check Balance
+            </button>
+
+            <button onclick="withdrawMoney()">
+                Withdraw
+            </button>
+
+            <button onclick="depositMoney()">
+                Deposit
+            </button>
+
+            <button onclick="changePin()">
+                Change PIN
+            </button>
+
+            <button onclick="accountDetails()">
+                Account Details
+            </button>
+
+            <button onclick="logout()">
+                Logout
+            </button>
+
+            <h3 id="message"></h3>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // LOGIN
+
+        async function login(){
+
+            let pin =
+            document.getElementById("pin").value;
+
+            let response =
+            await fetch("/login",{
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    pin:pin
+                })
+            });
+
+            let data =
+            await response.json();
+
+            if(data.status === "success"){
+
+                document.getElementById("loginPage")
+                .style.display = "none";
+
+                document.getElementById("menuPage")
+                .style.display = "block";
+            }
+
+            else{
+
+                document.getElementById("loginMessage")
+                .innerHTML = data.message;
+
+                document.getElementById("loginMessage")
+                .style.color = "red";
+            }
+        }
+
+
+
+        // CHECK BALANCE
+
+        async function checkBalance(){
+
+            let response =
+            await fetch("/balance");
+
+            let data =
+            await response.json();
+
+            document.getElementById("message")
+            .innerHTML =
+            "Available Balance : ₹" + data.balance;
+        }
+
+
+
+        // WITHDRAW
+
+        async function withdrawMoney(){
+
+            let amount =
+            prompt("Enter amount to withdraw");
+
+            let response =
+            await fetch("/withdraw",{
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    amount:amount
+                })
+            });
+
+            let data =
+            await response.json();
+
+            document.getElementById("message")
+            .innerHTML = data.message;
+        }
+
+
+
+        // DEPOSIT
+
+        async function depositMoney(){
+
+            let amount =
+            prompt("Enter amount to deposit");
+
+            let response =
+            await fetch("/deposit",{
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+                    amount:amount
+                })
+            });
+
+            let data =
+            await response.json();
+
+            document.getElementById("message")
+            .innerHTML = data.message;
+        }
+
+
+
+        // CHANGE PIN
+
+        async function changePin(){
+
+            let oldPin =
+            prompt("Enter old PIN");
+
+            let newPin =
+            prompt("Enter new PIN");
+
+            let confirmPin =
+            prompt("Confirm new PIN");
+
+            let response =
+            await fetch("/change_pin",{
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    old_pin:oldPin,
+
+                    new_pin:newPin,
+
+                    confirm_pin:confirmPin
+                })
+            });
+
+            let data =
+            await response.json();
+
+            document.getElementById("message")
+            .innerHTML = data.message;
+        }
+
+
+
+        // ACCOUNT DETAILS
+
+        async function accountDetails(){
+
+            let response =
+            await fetch("/details");
+
+            let data =
+            await response.json();
+
+            document.getElementById("message")
+            .innerHTML =
+
+            "Name : " + data.name + "<br>" +
+
+            "DOB : " + data.dob + "<br>" +
+
+            "Balance : ₹" + data.balance;
+        }
+
+
+
+        // LOGOUT
+
+        function logout(){
+
+            location.reload();
+        }
+
+    </script>
+
+</body>
+</html>
